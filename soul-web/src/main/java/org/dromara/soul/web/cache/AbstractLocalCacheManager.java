@@ -60,7 +60,7 @@ public abstract class AbstractLocalCacheManager implements LocalCacheManager {
     static final ConcurrentMap<String, AppAuthData> AUTH_MAP = Maps.newConcurrentMap();
 
     /**
-     * path-> MetaData.
+     * path-> MetaData.[bins-comments:META_DATA其实就是数据库表meta_data中的记录]
      */
     static final ConcurrentMap<String, MetaData> META_DATA = Maps.newConcurrentMap();
 

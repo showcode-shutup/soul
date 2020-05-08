@@ -46,6 +46,7 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
             <version>2.1.1.RELEASE</version>
+            <!--bins-comments: provided表明该包只在编译和测试的时候用-->
             <scope>provided</scope>
         </dependency>
 

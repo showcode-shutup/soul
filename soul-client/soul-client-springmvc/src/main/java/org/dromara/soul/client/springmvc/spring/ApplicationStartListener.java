@@ -31,6 +31,8 @@ import java.net.UnknownHostException;
 
 /**
  * ApplicationStartListener.
+ * [bins-comments: 实现了ApplicationListener接口，当ApplicationContext发布ApplicationEvent时，ApplicationListener Bean将自动被触发。这种事件机制都必须需要程序显示的触发。]
+ * [WebServerInitializedEvent的含义是"在刷新应用程序上下文和Web服务器已就绪" =》项目启动时执行该类中方法往zk上注册客户自己机器的ip地址和端口号到zk的节点上]
  *
  * @author xiaoyu
  */
@@ -60,6 +62,7 @@ public class ApplicationStartListener implements ApplicationListener<WebServerIn
             log.error("springMvc register must config context-path and zookeeperUrl.... ");
             return;
         }
+        //[bins-comments:客户自己的项目启动的时候，会去zk上注册临时节点]
         try {
             ZkClient zkClient = new ZkClient(soulHttpConfig.getZookeeperUrl(), 5000, 2000);
             boolean exists = zkClient.exists(ROOT);

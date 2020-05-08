@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 
 /**
- * The type Soul spring mvc auto configuration.
+ * The type Soul spring mvc auto configuration.[bins-comments:bean的配置类，这个类里会创建两个bean就是ApplicationStartListener和SoulClientBeanPostProcessor]
  *
  * @author xiaoyu
  */

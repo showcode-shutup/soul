@@ -42,6 +42,8 @@ import java.util.stream.Collectors;
 
 /**
  * The type Soul client bean post processor.
+ * [bins-comments: 继承了BeanPostProcessor接口，所以在bean初始化前后会执行这个对象里的方法
+ * 本类作用 ==》将添加了SoulClient注解的方法，添加进soul-admin里面（其实是写入了soul-admin数据库）]
  *
  * @author xiaoyu(Myth)
  */
@@ -75,6 +77,7 @@ public class SoulClientBeanPostProcessor implements BeanPostProcessor {
 
     @Override
     public Object postProcessAfterInitialization(@NonNull final Object bean, @NonNull final String beanName) throws BeansException {
+        // [bins-comments: 先获取含有以下注解的controller]
         Controller controller = AnnotationUtils.findAnnotation(bean.getClass(), Controller.class);
         RestController restController = AnnotationUtils.findAnnotation(bean.getClass(), RestController.class);
         RequestMapping requestMapping = AnnotationUtils.findAnnotation(bean.getClass(), RequestMapping.class);
@@ -88,6 +91,7 @@ public class SoulClientBeanPostProcessor implements BeanPostProcessor {
             }
             final Method[] methods = ReflectionUtils.getUniqueDeclaredMethods(bean.getClass());
             for (Method method : methods) {
+                // [bins-comments: 获取含有SoulClient注解的方法]
                 SoulClient soulClient = AnnotationUtils.findAnnotation(method, SoulClient.class);
                 if (Objects.nonNull(soulClient)) {
                     executorService.execute(() -> post(buildJsonParams(soulClient, contextPath, bean, method)));
@@ -97,6 +101,7 @@ public class SoulClientBeanPostProcessor implements BeanPostProcessor {
         return bean;
     }
 
+    // [bins-comments: 将添加了SoulClient注解的方法，添加进soul-admin里面（其实是写入了soul-admin数据库）]
     private void post(final String json) {
         try {
             String result = OkHttpTools.getInstance().post(url, json);
@@ -115,6 +120,7 @@ public class SoulClientBeanPostProcessor implements BeanPostProcessor {
         if (appName == null || "".equals(appName)) {
             appName = env.getProperty("spring.application.name");
         }
+        // [bins-comments: 获取注解上配置的path]
         String path = contextPath + soulClient.path();
         String desc = soulClient.desc();
         String serviceName = bean.getClass().getSimpleName();
